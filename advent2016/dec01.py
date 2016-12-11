@@ -38,61 +38,64 @@ blocks away, due East.
 
 How many blocks away is the first location you visit twice?
 """
+import numpy as np
 
 import utils
 
+LEFT_TURN = np.matrix([[0, -1], [1, 0]])
+RIGHT_TURN = np.matrix([[0, 1], [-1, 0]])
+
+ROTATE = {'L': LEFT_TURN, 'R': RIGHT_TURN}
+
 def get_new_location(seq):
 
-    dirs = [(0, 1), (-1, 0), (0, -1), (1, 0)]
-    current_dir = 0
-    position = [0, 0]
+    ## start facing north
+    direction = np.matrix([0, 1]).T
+
+    ## start at 0, 0
+    location = np.matrix([0, 0]).T
 
     moves = seq.split(', ')
 
     for move in moves:
 
-        if move[0] == 'R':
-            current_dir = (current_dir - 1) % len(dirs)
+        move_direction, move_distance = move[0], int(move[1:])
 
-        elif move[0] == 'L':
-            current_dir = (current_dir + 1) % len(dirs)
+        ## rotate to new direction
+        direction = ROTATE[move_direction]*direction
 
-        move_distance = int(move[1:])
+        ## jump to new location
+        location += direction*move_distance
 
-        position[0] += dirs[current_dir][0]*move_distance
-        position[1] += dirs[current_dir][1]*move_distance
-
-    return sum([abs(pos) for pos in position])
+    return np.sum(np.abs(location))
 
 def get_first_location_twice(seq):
 
-    dirs = [(0, 1), (-1, 0), (0, -1), (1, 0)]
-    current_dir = 0
-    position = [0, 0]
-    visited_positions = {tuple(position)}
+    ## start facing north
+    direction = np.matrix([0, 1]).T
+
+    ## start at 0, 0
+    location = np.matrix([0, 0]).T
+
+    visited_locations = set(tuple(location.flat))
 
     moves = seq.split(', ')
 
     for move in moves:
+        move_direction, move_distance = move[0], int(move[1:])
 
-        if move[0] == 'R':
-            current_dir = (current_dir - 1) % len(dirs)
+        ## rotate to new direction
+        direction = ROTATE[move_direction]*direction
 
-        elif move[0] == 'L':
-            current_dir = (current_dir + 1) % len(dirs)
-
-        move_distance = int(move[1:])
-
+        ## check whether each step has already been visited
         for _ in range(move_distance):
-            position[0] += dirs[current_dir][0]
-            position[1] += dirs[current_dir][1]
+            location += direction
+            flattened_location = tuple(location.flat)
 
-            if tuple(position) in visited_positions:
-                return sum([abs(pos) for pos in position])
+            if flattened_location in visited_locations:
+                return np.sum(np.abs(location))
 
-            visited_positions.add(tuple(position))
-
-    raise Exception('NO DUPLICATE POSITIONS')
+            visited_locations.add(flattened_location)
 
 def run_tests():
 
@@ -115,7 +118,7 @@ if __name__ == '__main__':
     run_tests()
 
     filename = 'dec01_input.txt'
-    text = utils.read_file(filename)[0]
+    inputs = utils.read_file(filename)[0]
 
-    print('SHORTEST PATH TO DESTINATION (BLOCKS): %r' % get_new_location(text))
-    print('FIRST DESTINATION VISITED TWICE (BLOCKS): %d' % get_first_location_twice(text))
+    print('SHORTEST PATH TO DESTINATION (BLOCKS): %r' % get_new_location(inputs))
+    print('FIRST DESTINATION VISITED TWICE (BLOCKS): %d' % get_first_location_twice(inputs))
