@@ -61,11 +61,13 @@ Your puzzle answer was bacdefgh.
 
 import utils
 
+
 def swap_position(message, pos_x, pos_y):
     """swap the letters at indexes X and Y (counting from 0)"""
     m_list = list(message)
     m_list[pos_x], m_list[pos_y] = m_list[pos_y], m_list[pos_x]
     return ''.join(m_list)
+
 
 def swap_letter(message, letter1, letter2):
     """swap the letters X and Y (regardless of where they appear in the string)"""
@@ -74,14 +76,17 @@ def swap_letter(message, letter1, letter2):
     message = message.replace('?', letter2)
     return message
 
+
 def rotate_right(message, pos):
     """rotate the whole string to the right"""
     length = len(message)
-    return message[length-pos:] + message[:length-pos]
+    return message[length - pos:] + message[:length - pos]
+
 
 def rotate_left(message, pos):
     """rotate the whole string to the left"""
     return message[pos:] + message[:pos]
+
 
 def rotate_by_position(message, letter):
     """rotate the whole string to the right based on the index of letter X (counting from 0)
@@ -91,7 +96,8 @@ def rotate_by_position(message, letter):
     pos = message.find(letter)
     if pos >= 4:
         pos += 1
-    return rotate_right(message, pos+1)
+    return rotate_right(message, pos + 1)
+
 
 def reverse_rotate_by_position(message, letter):
     """reverse the rotate_by_position function"""
@@ -100,17 +106,20 @@ def reverse_rotate_by_position(message, letter):
         if message == rotate_by_position(unscrambled_message, letter):
             return unscrambled_message
 
+
 def reverse(message, start_pos, end_pos):
     """the span of letters at indexes X through Y (including the letters at X and Y)
     should be reversed in order."""
-    return message[:start_pos] + message[start_pos:end_pos+1][::-1] + message[end_pos+1:]
+    return message[:start_pos] + message[start_pos:end_pos + 1][::-1] + message[end_pos + 1:]
+
 
 def move(message, old_pos, new_pos):
     """the letter which is at index X should be removed from the string,
     then inserted such that it ends up at index Y"""
     letter = message[old_pos]
-    message = message[:old_pos]+message[old_pos+1:]
+    message = message[:old_pos] + message[old_pos + 1:]
     return message[:new_pos] + letter + message[new_pos:]
+
 
 def scramble(instructions, message):
     for instruction in instructions:
@@ -118,74 +127,74 @@ def scramble(instructions, message):
 
         if action == 'swap':
             if params[0] == 'position':
-                ## swap position X with position Y
+                # swap position X with position Y
                 message = swap_position(message, int(params[1]), int(params[4]))
 
             elif params[0] == 'letter':
-                ## swap letter X with letter Y
+                # swap letter X with letter Y
                 message = swap_letter(message, params[1], params[4])
 
         elif action == 'rotate':
             if params[0] == 'left':
-                ## rotate left X steps
+                # rotate left X steps
                 message = rotate_left(message, int(params[1]))
 
             elif params[0] == 'right':
-                ## rotate right X steps
+                # rotate right X steps
                 message = rotate_right(message, int(params[1]))
 
             elif params[0] == 'based':
-                ## rotate based on position of letter X
+                # rotate based on position of letter X
                 message = rotate_by_position(message, params[5])
 
         elif action == 'reverse':
-            ## reverse positions X through Y
+            # reverse positions X through Y
             message = reverse(message, int(params[1]), int(params[3]))
 
         elif action == 'move':
-            ## move position X to position Y
+            # move position X to position Y
             message = move(message, int(params[1]), int(params[4]))
 
     return message
 
-def unscramble(instructions, message):
 
+def unscramble(instructions, message):
     for instruction in instructions:
         action, *params = instruction.split(' ')
         if action == 'swap':
             if params[0] == 'position':
-                ## reverse: swap position X with position Y
+                # reverse: swap position X with position Y
                 message = swap_position(message, int(params[4]), int(params[1]))
 
             elif params[0] == 'letter':
-                ## reverse: swap letter X with letter Y
+                # reverse: swap letter X with letter Y
                 message = swap_letter(message, params[4], params[1])
 
         elif action == 'rotate':
             if params[0] == 'left':
-                ## reverse: rotate left X steps
+                # reverse: rotate left X steps
                 message = rotate_right(message, int(params[1]))
 
             elif params[0] == 'right':
-                ## reverse: rotate right X steps
+                # reverse: rotate right X steps
                 message = rotate_left(message, int(params[1]))
 
             elif params[0] == 'based':
-                ## reverse: rotate based on position of letter X
+                # reverse: rotate based on position of letter X
                 message = reverse_rotate_by_position(message, params[5])
 
         elif action == 'reverse':
-            ## reverse: reverse positions X through Y
+            # reverse: reverse positions X through Y
             message = reverse(message, int(params[1]), int(params[3]))
 
         elif action == 'move':
-            ## reverse: move position X to position Y
+            # reverse: move position X to position Y
             message = move(message, int(params[4]), int(params[1]))
 
     return message
 
-def run_tests():
 
+def run_tests():
     instructions = [
         'swap position 4 with position 0',
         'swap letter d with letter b',
@@ -199,16 +208,16 @@ def run_tests():
 
     message = 'abcde'
     scrambled_message = 'decab'
-    
+
     act_res = scramble(instructions, message)
     assert act_res == scrambled_message, 'SCRAMBLED MESSAGE: %r != %r (EXPECTED)' % \
-        (act_res, scrambled_message)
+                                         (act_res, scrambled_message)
 
     act_res = unscramble(instructions[::-1], scrambled_message)
     assert act_res == message, 'UNSCRAMBLED MESSAGE: %r != %r (EXPECTED)' % (act_res, message)
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     run_tests()
 
     filename = 'dec21_input.txt'

@@ -58,8 +58,9 @@ import hashlib
 
 import utils
 
+
 def zero_hash_generator(door_id):
-    index_limit = 10**8
+    index_limit = 10 ** 8
     for i in range(index_limit):
         h = hashlib.md5()
         h.update((door_id + str(i)).encode())
@@ -70,10 +71,10 @@ def zero_hash_generator(door_id):
 
     raise Exception('INDEX HIGHER THAN %d' % index_limit)
 
-def get_password(door_id, length):
 
+def get_password(door_id, length):
     zero_hashes = zero_hash_generator(door_id)
-    pwd = ['-']*length
+    pwd = ['-'] * length
     for i in range(length):
         h_hex = next(zero_hashes)
         pwd[i] = h_hex[5]
@@ -82,11 +83,11 @@ def get_password(door_id, length):
     print('\n')
     return ''.join(pwd)
 
-def get_ordered_password(door_id, length):
 
+def get_ordered_password(door_id, length):
     max_iterations = 100
     zero_hashes = zero_hash_generator(door_id)
-    pwd = ['-']*length
+    pwd = ['-'] * length
 
     for _ in range(max_iterations):
         h_hex = next(zero_hashes)
@@ -106,8 +107,8 @@ def get_ordered_password(door_id, length):
 
     raise Exception('PASSWORD NOT FOUND IN %d ITERATIONS' % max_iterations)
 
-def run_tests():
 
+def run_tests():
     seq = 'abc'
     res = '18f47a30'
     act_res = get_password(seq, 8)
@@ -118,8 +119,8 @@ def run_tests():
     act_res = get_ordered_password(seq, 8)
     assert act_res == res, 'ORDERED PASSWORD: %r != %r (EXPECTED)' % (act_res, res)
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     run_tests()
 
     filename = 'dec05_input.txt'

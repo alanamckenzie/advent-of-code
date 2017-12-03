@@ -65,25 +65,28 @@ After you swipe your card, what code is the screen trying to display?
 import numpy as np
 import utils
 
+
 def rotate_column(screen, col, num_pixels):
     new_screen = np.array(screen)
     height = screen.shape[0]
     if num_pixels <= 0:
         return new_screen
-    new_screen[:num_pixels, col] = screen[height-num_pixels:, col]
-    new_screen[num_pixels:, col] = screen[:height-num_pixels, col]
+    new_screen[:num_pixels, col] = screen[height - num_pixels:, col]
+    new_screen[num_pixels:, col] = screen[:height - num_pixels, col]
 
     return new_screen
+
 
 def rotate_row(screen, row, num_pixels):
     new_screen = np.array(screen)
     width = screen.shape[1]
     if num_pixels <= 0:
         return new_screen
-    new_screen[row, :num_pixels] = screen[row, width-num_pixels:]
-    new_screen[row, num_pixels:] = screen[row, :width-num_pixels]
+    new_screen[row, :num_pixels] = screen[row, width - num_pixels:]
+    new_screen[row, num_pixels:] = screen[row, :width - num_pixels]
 
     return new_screen
+
 
 def rect(screen, width, height):
     new_screen = np.array(screen)
@@ -93,8 +96,9 @@ def rect(screen, width, height):
     new_screen[:height, :width] = '#'
     return new_screen
 
+
 def get_screen(instructions, screen_width, screen_height):
-    screen = np.array(['.']*screen_height*screen_width).reshape((screen_height, screen_width))
+    screen = np.array(['.'] * screen_height * screen_width).reshape((screen_height, screen_width))
 
     for instruction in instructions:
         action, *params = instruction.split(' ')
@@ -103,12 +107,12 @@ def get_screen(instructions, screen_width, screen_height):
             screen = rect(screen, int(str_x), int(str_y))
 
         if action == 'rotate':
-            ## either: rotate row y=A by B
-            ## or rotate column x=A by B
+            # either: rotate row y=A by B
+            # or rotate column x=A by B
             row_or_column, coord, _, str_num_pixels = params
             _, str_index = coord.split('=')
             if row_or_column == 'row':
-                #print('ROW: %d, %d' % (int(str_index), int(str_num_pixels)))
+                # print('ROW: %d, %d' % (int(str_index), int(str_num_pixels)))
                 screen = rotate_row(screen,
                                     int(str_index),
                                     int(str_num_pixels))
@@ -120,11 +124,12 @@ def get_screen(instructions, screen_width, screen_height):
 
     return screen
 
+
 def count_screen_on(screen):
     return np.sum(screen == '#')
 
-def run_tests():
 
+def run_tests():
     instructions = ['rect 3x2',
                     'rotate column x=1 by 1',
                     'rotate row y=0 by 4',
@@ -137,9 +142,9 @@ def run_tests():
     act_res = get_screen(instructions, 7, 3).tolist()
     assert act_res == res, 'IS VALID MESSAGE: %r != %r (EXPECTED)' % (act_res, res)
 
-    #res = 'advent'
-    #act_res = is_valid_message(message)
-    #assert act_res == res, 'MESSAGE BY LEAST COMMON LETTER: %r != %r (EXPECTED)' % (act_res, res)
+    # res = 'advent'
+    # act_res = is_valid_message(message)
+    # assert act_res == res, 'MESSAGE BY LEAST COMMON LETTER: %r != %r (EXPECTED)' % (act_res, res)
 
 
 if __name__ == '__main__':

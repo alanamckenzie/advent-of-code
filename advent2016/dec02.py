@@ -88,7 +88,7 @@ KEYPAD_2 = np.array([
     [None, 'A', 'B', 'C', None],
     [None, None, 'D', None, None]])
 
-## direction: (row, column)
+# direction: (row, column)
 MOVES = {
     'U': np.array([1, 0]),
     'D': np.array([1, 0]),
@@ -96,16 +96,18 @@ MOVES = {
     'L': np.array([0, -1])
 }
 
+
 def get_position(value, keypad):
     x_vals, y_vals = np.where(keypad == value)
     return np.array([x_vals[0], y_vals[0]])
+
 
 def get_value(position, keypad):
     column, row = position[0], position[1]
     return keypad[column, row]
 
-def get_next_code_value(start_value, instructions, keypad):
 
+def get_next_code_value(start_value, instructions, keypad):
     position = get_position(start_value, keypad)
 
     for letter in instructions:
@@ -117,8 +119,8 @@ def get_next_code_value(start_value, instructions, keypad):
 
     return get_value(position, keypad)
 
-def get_code(start_value, instructions, keypad):
 
+def get_code(start_value, instructions, keypad):
     code = []
     for line in instructions:
         code.append(get_next_code_value(start_value, line, keypad))
@@ -126,8 +128,8 @@ def get_code(start_value, instructions, keypad):
 
     return ''.join(code)
 
-def run_tests():
 
+def run_tests():
     start_value, instructions, res = '5', ['ULL', 'RRDDD', 'LURDL', 'UUUUD'], '1985'
     act_res = get_code(start_value, instructions, KEYPAD_1)
     assert act_res == res, 'GET CODE FROM KEYPAD 1: %r != %r (EXPECTED)' % (act_res, res)
@@ -135,6 +137,7 @@ def run_tests():
     start_value, instructions, res = '5', ['ULL', 'RRDDD', 'LURDL', 'UUUUD'], '5DB3'
     act_res = get_code(start_value, instructions, KEYPAD_2)
     assert act_res == res, 'GET CODE FROM KEYPAD 2: %r != %r (EXPECTED)' % (act_res, res)
+
 
 if __name__ == '__main__':
     run_tests()

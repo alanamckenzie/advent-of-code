@@ -54,10 +54,10 @@ If you instead initialize register c to be 1, what value is now left in register
 
 import utils
 
-def get_registers(instructions, init_a=0, init_b=0, init_c=0, init_d=0):
 
-    registers = {'a':init_a, 'b':init_b, 'c':init_c, 'd':init_d}
-    max_iterations = 10**9
+def get_registers(instructions, init_a=0, init_b=0, init_c=0, init_d=0):
+    registers = {'a': init_a, 'b': init_b, 'c': init_c, 'd': init_d}
+    max_iterations = 10 ** 9
     step = 0
 
     for _ in range(max_iterations):
@@ -92,15 +92,15 @@ def get_registers(instructions, init_a=0, init_b=0, init_c=0, init_d=0):
 
     raise Exception('GIVING UP AFTER %d ITERATIONS' % max_iterations)
 
-def run_tests():
 
+def run_tests():
     seq = ['cpy 41 a', 'inc a', 'inc a', 'dec a', 'jnz a 2', 'dec a']
     res = 42
     act_res = get_registers(seq)['a']
     assert act_res == res, 'VALUE OF REGISTER A: %r != %r (EXPECTED)' % (act_res, res)
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     run_tests()
 
     filename = 'dec12_input.txt'

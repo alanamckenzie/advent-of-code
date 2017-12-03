@@ -56,15 +56,13 @@ maze = {}
 
 
 def get_function(favourite_number):
-
     def f(x, y):
-
         if x < 0 or y < 0:
             return False
 
-        value = x*x + 3*x + 2*x*y + y + y*y + favourite_number
+        value = x * x + 3 * x + 2 * x * y + y + y * y + favourite_number
         num_ones = sum([int(i) for i in str(bin(value))[2:]])
-        return num_ones//2 == num_ones/2
+        return num_ones // 2 == num_ones / 2
 
     return f
 
@@ -86,7 +84,7 @@ def get_moves(location, func):
 
 
 def print_maze(num_moves):
-    results = [[' ']*num_moves for _ in range(num_moves)]
+    results = [[' '] * num_moves for _ in range(num_moves)]
     for move, value in maze.items():
         if not value:
             results[move[1]][move[0]] = '#'
@@ -96,12 +94,11 @@ def print_maze(num_moves):
 
 
 def run(favourite_number, target=None, max_moves=1000):
-
     paths = [
         [(1, 1)],
     ]
     func = get_function(favourite_number)
-    for move_num in range(1, max_moves+1):
+    for move_num in range(1, max_moves + 1):
 
         new_paths = []
         while paths:
@@ -128,7 +125,7 @@ def run(favourite_number, target=None, max_moves=1000):
     unique_moves = [k for k, v in maze.items() if v]
     print(f'{len(unique_moves)} UNIQUE COORDINATES AFTER {move_num} MOVES')
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     # run(1352, (31, 39), None)
     run(1352, None, 50)

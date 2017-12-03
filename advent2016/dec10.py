@@ -151,8 +151,8 @@ def run(instructions):
     print(results)
     print(results[0]*results[1]*results[2])
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     filename = 'dec10_input.txt'
     instructions = utils.read_file(filename)
 

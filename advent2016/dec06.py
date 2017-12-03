@@ -56,7 +56,6 @@ import utils
 
 
 def get_message(inputs, position=0):
-
     num_letters = max([len(line) for line in inputs])
     column_counters = [collections.Counter() for _ in range(num_letters)]
 
@@ -64,13 +63,13 @@ def get_message(inputs, position=0):
         for i, letter in enumerate(line):
             column_counters[i][letter] = column_counters[i].get(letter, 0) + 1
 
-    ## most common returns a list of (value, count) tuples
-    ## ordered by most to least recent
+    # most common returns a list of (value, count) tuples
+    # ordered by most to least recent
     message = ''.join([cc.most_common()[position][0][0] for cc in column_counters])
     return message
 
-def run_tests():
 
+def run_tests():
     seq = ["eedadn", "drvtee", "eandsr", "raavrd", "atevrs", "tsrnev", "sdttsa", "rasrtv",
            "nssdts", "ntnada", "svetve", "tesnvt", "vntsnd", "vrdear", "dvrsen", "enarar"]
     res = 'easter'
@@ -83,7 +82,6 @@ def run_tests():
 
 
 if __name__ == '__main__':
-
     run_tests()
 
     filename = 'dec06_input.txt'

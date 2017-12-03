@@ -45,46 +45,50 @@ For example:
 import re
 import utils
 
+
 def has_four_letter_palindrome(message):
     for i in range(len(message) - 3):
-        if message[i] == message[i+1]:
+        if message[i] == message[i + 1]:
             continue
-        if message[i:i+2] == message[i+2:i+4][::-1]:
+        if message[i:i + 2] == message[i + 2:i + 4][::-1]:
             return True
 
     return False
 
+
 def get_abas(message):
     abas = set()
-    for i in range(len(message)-2):
-        if message[i] == message[i+2] and message[i] != message[i+1]:
-            abas.add(message[i:i+3])
+    for i in range(len(message) - 2):
+        if message[i] == message[i + 2] and message[i] != message[i + 1]:
+            abas.add(message[i:i + 3])
     return abas
+
 
 def is_valid_tls(message):
     split_message = re.split(r'[\[\]]', message)
 
-    ## check [xxxx] hypernet sequences
+    # check [xxxx] hypernet sequences
     for i in range(1, len(split_message), 2):
         if has_four_letter_palindrome(split_message[i]):
             return False
 
-    ## check remaining sequences
+    # check remaining sequences
     for i in range(0, len(split_message), 2):
         if has_four_letter_palindrome(split_message[i]):
             return True
 
     return False
 
+
 def is_valid_ssl(message):
     split_message = re.split(r'[\[\]]', message)
 
     hypernet_abas = set()
-    ## check [xxxx] hypernet sequences
+    # check [xxxx] hypernet sequences
     for i in range(1, len(split_message), 2):
         hypernet_abas = hypernet_abas.union(get_abas(split_message[i]))
 
-    ## check remaining sequences
+    # check remaining sequences
     for i in range(0, len(split_message), 2):
         for aba in get_abas(split_message[i]):
             bab = '%s%s%s' % (aba[1], aba[0], aba[1])
@@ -92,14 +96,16 @@ def is_valid_ssl(message):
                 return True
     return False
 
+
 def count_tls_messages(messages):
     return sum([is_valid_tls(message) for message in messages])
+
 
 def count_ssl_messages(messages):
     return sum([is_valid_ssl(message) for message in messages])
 
-def run_tests():
 
+def run_tests():
     test_cases = [
         ('abba[mnop]qrst', True),
         ('aaaa[qwer]tyui', False),
@@ -109,7 +115,7 @@ def run_tests():
     for message, res in test_cases:
         act_res = is_valid_tls(message)
         assert act_res == res, 'IS VALID TLS MESSAGE (%s): %r != %r (EXPECTED)' % \
-            (message, act_res, res)
+                               (message, act_res, res)
 
     test_cases = [
         ('aba[bab]xyz', True),
@@ -121,10 +127,10 @@ def run_tests():
     for message, res in test_cases:
         act_res = is_valid_ssl(message)
         assert act_res == res, 'IS VALID MESSAGE SSH (%s): %r != %r (EXPECTED)' % \
-            (message, act_res, res)
+                               (message, act_res, res)
+
 
 if __name__ == '__main__':
-
     run_tests()
 
     filename = 'dec07_input.txt'

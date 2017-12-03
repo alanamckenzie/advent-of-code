@@ -18,12 +18,14 @@ In your puzzle input, how many of the listed triangles are possible?
 
 import utils
 
+
 def is_triangle(sides):
     if len(sides) < 3:
         return False
 
     sides = sorted(sides)
     return sides[2] < sides[0] + sides[1]
+
 
 def count_triangles(side_list):
     num_triangles = 0
@@ -35,13 +37,15 @@ def count_triangles(side_list):
 
     return num_triangles
 
+
 def get_next_three_horizontal_sides(lines):
     num_lines = 3
     for i in range(0, len(lines), num_lines):
         result = []
         for j in range(3):
-            result.append([int(s) for s in lines[i+j].split()])
+            result.append([int(s) for s in lines[i + j].split()])
         yield result
+
 
 def count_vertical_triangles(text):
     num_triangles = 0
@@ -49,15 +53,15 @@ def count_vertical_triangles(text):
     horizontal_side_gen = get_next_three_horizontal_sides(text)
     for horizontal_side_list in horizontal_side_gen:
         for i in range(3):
-            ## use the ith column value for each side
+            # use the ith column value for each side
             vertical_sides = [s[i] for s in horizontal_side_list]
             if is_triangle(vertical_sides):
                 num_triangles += 1
 
     return num_triangles
 
-def run_tests():
 
+def run_tests():
     test_cases = [
         (['1 5 7', '10 5 2', '11 6 6'], 1),
     ]
@@ -74,8 +78,8 @@ def run_tests():
         act_res = count_vertical_triangles(seq)
         assert act_res == res, 'COUNT VERTICAL TRIANGLES: %r != %r (EXPECTED)' % (act_res, res)
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     run_tests()
 
     filename = 'dec03_input.txt'

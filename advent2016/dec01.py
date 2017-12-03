@@ -47,34 +47,33 @@ RIGHT_TURN = np.matrix([[0, 1], [-1, 0]])
 
 ROTATE = {'L': LEFT_TURN, 'R': RIGHT_TURN}
 
-def get_new_location(seq):
 
-    ## start facing north
+def get_new_location(seq):
+    # start facing north
     direction = np.matrix([0, 1]).T
 
-    ## start at 0, 0
+    # start at 0, 0
     location = np.matrix([0, 0]).T
 
     moves = seq.split(', ')
 
     for move in moves:
-
         move_direction, move_distance = move[0], int(move[1:])
 
-        ## rotate to new direction
-        direction = ROTATE[move_direction]*direction
+        # rotate to new direction
+        direction = ROTATE[move_direction] * direction
 
-        ## jump to new location
-        location += direction*move_distance
+        # jump to new location
+        location += direction * move_distance
 
     return np.sum(np.abs(location))
 
-def get_first_location_twice(seq):
 
-    ## start facing north
+def get_first_location_twice(seq):
+    # start facing north
     direction = np.matrix([0, 1]).T
 
-    ## start at 0, 0
+    # start at 0, 0
     location = np.matrix([0, 0]).T
 
     visited_locations = set(tuple(location.flat))
@@ -84,10 +83,10 @@ def get_first_location_twice(seq):
     for move in moves:
         move_direction, move_distance = move[0], int(move[1:])
 
-        ## rotate to new direction
-        direction = ROTATE[move_direction]*direction
+        # rotate to new direction
+        direction = ROTATE[move_direction] * direction
 
-        ## check whether each step has already been visited
+        # check whether each step has already been visited
         for _ in range(move_distance):
             location += direction
             flattened_location = tuple(location.flat)
@@ -97,8 +96,8 @@ def get_first_location_twice(seq):
 
             visited_locations.add(flattened_location)
 
-def run_tests():
 
+def run_tests():
     test_cases = [
         ('R2, L3', 5),
         ('R2, R2, R2', 2),
@@ -113,8 +112,8 @@ def run_tests():
     act_res = get_first_location_twice(seq)
     assert act_res == res, 'GET FIRST LOCATION: %r != %r (EXPECTED)' % (act_res, res)
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     run_tests()
 
     filename = 'dec01_input.txt'
