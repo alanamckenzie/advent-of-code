@@ -60,34 +60,32 @@ What is the solution to your new captcha?
 """
 
 
-def is_match_next(i, captcha):
-    """Determine whether the value at index i matches the next value in the captcha
+def is_match(i, captcha, offset=1):
+    """Determine whether the value at index i matches the value at index i + offset
     
     :param int i: index to test
     :param str captcha: full captcha
+    :param int offset: match value at index i + offset
     :return: whether the value at index i matches the next value
     :rtype: bool
     """
 
-    if i+1 < len(captcha):
-        return captcha[i] == captcha[i+1]
-
-    if i+1 == len(captcha):
-        return captcha[i] == captcha[0]
-
-    raise Exception(f'Invalid index: {i} is out of range for capthca {captcha}')
+    match_i = (i + offset) % len(captcha)
+    return captcha[i] == captcha[match_i]
 
 
-def get_captcha_match_sum(captcha):
-    """Solve a captcha by adding values that match the next value in the captcha.
+def get_captcha_match_sum(captcha, offset=1):
+    """Solve a captcha by adding matching values within the captcha.
+    Values at each index are compared with the value at index + offset, and matching values are added to the total.
     
     :param str captcha: captcha to solve. must be a string of digits
+    :param int offset: match values at index, and index + offset, of the captcha
     :return: captcha solution
     :rtype: int
     """
     total = 0
     for i in range(len(captcha)):
-        if is_match_next(i, captcha):
+        if is_match(i, captcha, offset=offset):
             total += int(captcha[i])
 
     return total
@@ -97,5 +95,9 @@ if __name__ == '__main__':
     import utils
     captcha = utils.read_file(r'../inputs/dec01_input.txt')[0]
 
-    captcha_solution = get_captcha_match_sum(captcha)
-    print(f'Matched captcha solution: {captcha_solution}')
+    captcha_solution = get_captcha_match_sum(captcha, offset=1)
+    print(f'Matched captcha solution, offset=1: {captcha_solution}')
+
+    offset = len(captcha)//2
+    captcha_solution = get_captcha_match_sum(captcha, offset=offset)
+    print(f'Matched captcha solution, offset={offset}: {captcha_solution}')
