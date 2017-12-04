@@ -102,19 +102,19 @@ def get_neighbour_values(spiral, pos_x, pos_y):
     return sum([spiral.get((pos_x + x, pos_y + y), 0) for x in [-1, 0, 1] for y in [-1, 0, 1] if (x, y) != (0, 0)])
 
 
-def get_spiral_sum_position(square_value):
-    """Get the spiral position of the first square with value greater than square_value.
+def get_spiral_sum_value(square_value):
+    """Get the value of the first square greater than square_value.
      The square value is the value of all neighbouring squares.
      
      The position and value is relative to square 1 at [0, 0].
 
     :param int square_value: value of the square to find 
-    :return: position of the first square with value greater than the input square_value
+    :return: value of the first square greater than the input square_value
     :rtype: list(int)
     """
 
     if square_value == 1:
-        return 0, 0
+        return 1
 
     pos_x, pos_y = 0, 0
     dir_i = 0
@@ -128,13 +128,13 @@ def get_spiral_sum_position(square_value):
             value = get_neighbour_values(spiral, pos_x, pos_y)
 
             if value >= square_value:
-                return pos_x, pos_y
+                return value
             spiral[(pos_x, pos_y)] = value
 
         # change direction
         dir_i = (dir_i + 1) % len(directions)
 
-    raise Exception(f'Position for square {square_value} not found')
+    raise Exception(f'Square value greater than {square_value} not found')
 
 
 def get_spiral_distance(input):
@@ -142,14 +142,9 @@ def get_spiral_distance(input):
     return abs(pos_x) + abs(pos_y)
 
 
-def get_spiral_sum_distance(input):
-    pos_x, pos_y = get_spiral_sum_position(input)
-    return abs(pos_x) + abs(pos_y)
-
-
 if __name__ == '__main__':
     solution = get_spiral_distance(312051)
     print(f'The spiral distance is: {solution}')
 
-    solution_sum = get_spiral_sum_distance(312051)
-    print(f'The spiral sum distance is: {solution_sum}')
+    solution_sum = get_spiral_sum_value(312051)
+    print(f'The first spiral sum value greater than the input is: {solution_sum}')

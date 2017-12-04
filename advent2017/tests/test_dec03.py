@@ -6,7 +6,7 @@ def _run_spiral_test(input, value):
 
 
 def _run_spiral_sum_test(input, value):
-    assert dec03.get_spiral_sum_distance(input) == value
+    assert dec03.get_spiral_sum_value(input) == value
 
 
 def test_spiral():
@@ -17,7 +17,7 @@ def test_spiral():
 
 
 def test_spiral_sum():
-    _run_spiral_sum_test(1, 0)
-    _run_spiral_sum_test(12, 1)
-    _run_spiral_sum_test(23, 1)
-    _run_spiral_sum_test(360, 4)
+    _run_spiral_sum_test(1, 1)
+    _run_spiral_sum_test(12, 23)
+    _run_spiral_sum_test(23, 23)
+    _run_spiral_sum_test(360, 362)
