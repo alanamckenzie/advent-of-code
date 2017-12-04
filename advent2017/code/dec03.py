@@ -73,12 +73,16 @@ def get_spiral_position(square):
     total = 1
     steps = []
     for step in get_steps():
-        if total + step > square:
+        if total + step >= square:
+            # the target square is in this section of the spiral
             break
         steps.append(step)
         total += step
 
+    # add remaining steps in the last section of the spiral
     steps.append(square - total)
+
+    # every 4th edge of the spiral is in the same direction
     pos_x = sum(steps[::4]) - sum(steps[2::4])
     pos_y = sum(steps[1::4]) - sum(steps[3::4])
 
@@ -86,6 +90,15 @@ def get_spiral_position(square):
 
 
 def get_neighbour_values(spiral, pos_x, pos_y):
+    """Calculate the sum of all neighbouring values to the current spiral position.
+    Neighbours include all 4 sides, and all 4 diagonals.
+    
+    :param dict(tuple: int) spiral: value at each position of the spiral 
+    :param int pos_x: position in the x direction 
+    :param int pos_y: position in the y direction
+    :return: sum of neighbour values
+    :rtype: int
+    """
     return sum([spiral.get((pos_x + x, pos_y + y), 0) for x in [-1, 0, 1] for y in [-1, 0, 1] if (x, y) != (0, 0)])
 
 
