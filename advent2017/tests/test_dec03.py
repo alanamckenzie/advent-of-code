@@ -1,12 +1,23 @@
 from advent2017.code import dec03
 
 
-def _run_test(input, value):
+def _run_spiral_test(input, value):
     assert dec03.get_spiral_distance(input) == value
 
 
-def tests():
-    _run_test(1, 0)
-    _run_test(12, 3)
-    _run_test(23, 2)
-    _run_test(1024, 31)
+def _run_spiral_sum_test(input, value):
+    assert dec03.get_spiral_sum_distance(input) == value
+
+
+def test_spiral():
+    _run_spiral_test(1, 0)
+    _run_spiral_test(12, 3)
+    _run_spiral_test(23, 2)
+    _run_spiral_test(1024, 31)
+
+
+def test_spiral_sum():
+    _run_spiral_sum_test(1, 0)
+    _run_spiral_sum_test(12, 1)
+    _run_spiral_sum_test(23, 1)
+    _run_spiral_sum_test(360, 4)
